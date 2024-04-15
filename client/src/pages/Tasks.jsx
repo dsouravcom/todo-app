@@ -4,6 +4,7 @@ import { AuthContext } from "../context/UserContext";
 import { format } from "date-fns";
 
 import LoadingGif from "../assets/Loading.svg";
+import EditLogo from "../assets/edit-logo.png";
 
 function Tasks({ props }) {
   const { user } = useContext(AuthContext);
@@ -12,6 +13,7 @@ function Tasks({ props }) {
   const [editedTask, setEditedTask] = useState("");
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [completed, setCompleted] = useState(false);
+  const [updateDate, setUpdateDate] = useState("");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -41,12 +43,14 @@ function Tasks({ props }) {
     const task = tasks.find((task) => task._id === id);
     if (task) {
       setEditedTask(task.name);
+      setUpdateDate(task.dueDate);
     }
   };
 
   const closeModal = () => {
     setShowModal(false);
     setEditedTask("");
+    setUpdateDate("");
     setSelectedTaskId(null);
   };
 
@@ -56,6 +60,7 @@ function Tasks({ props }) {
         .put(import.meta.env.VITE_APP_UPDATE_TASK_URL, {
           id: selectedTaskId,
           name: editedTask,
+          dueDate: updateDate,
         })
         .then((res) => {
           console.log(res.data.message);
@@ -124,7 +129,7 @@ function Tasks({ props }) {
         tasks.map((task) => (
           <div
             key={task._id}
-            className="flex justify-between items-center border-b py-2"
+            className="flex justify-between items-center border rounded-xl mb-2 py-2 px-2"
           >
             <div className="flex items-center">
               <input
@@ -143,9 +148,14 @@ function Tasks({ props }) {
                 htmlFor={`checkbox-${task._id}`}
                 className="peer-checked:text-gray-400 peer-checked:line-through"
               >
-                <span>{task.name}</span> {/* Displaying task name */}
+                <div className=" ">
+                  <span className="whitespace-pre-line">{task.name} </span>
+                  {/* Displaying task name */}
+                </div>
                 {task.dueDate && (
-                  <span className="border rounded-lg text-xs px-1 ms-2">{format(new Date(task.dueDate), "ccc d/M/yyyy")}</span>
+                  <span className="border rounded-lg text-xs px-1 ms-2">
+                    {format(new Date(task.dueDate), "ccc dd/MM/yyyy")}
+                  </span>
                 )}
               </label>
             </div>
@@ -153,12 +163,12 @@ function Tasks({ props }) {
               onClick={() => openModal(task._id)}
               className="text-blue-500"
             >
-              Edit
+              <img src={EditLogo} alt="edit" className=" pr-4 min-w-10" />
             </button>
           </div>
         ))
       ) : (
-        <p>No tasks</p>
+        <p>There are no tasks available; create one.</p>
       )}
 
       {showModal && (
@@ -169,13 +179,26 @@ function Tasks({ props }) {
             </h2>
             <div className="flex flex-col">
               <label htmlFor="task" className="text-gray-900">
-                Task Name<span className="text-red-600">*</span>
+                Task Name
               </label>
-              <input
+              <textarea
                 id="task"
                 type="text"
                 value={editedTask}
                 onChange={(e) => setEditedTask(e.target.value)}
+                className="border resize border-gray-300 text-gray-800 rounded-lg px-3 py-1 mb-4 w-[30rem] h-24"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="date" className="text-gray-900">
+                Due Date
+              </label>
+              <input
+                id="date"
+                type="date"
+                // value={updateDate.substring(0, 10)}
+                value={updateDate ? updateDate.substring(0, 10) : ""}
+                onChange={(e) => setUpdateDate(e.target.value)}
                 className="border border-gray-300 text-gray-800 rounded-lg px-3 py-1 mb-4"
               />
             </div>

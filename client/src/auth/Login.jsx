@@ -51,7 +51,7 @@ function Login() {
             alt="sign up with google"
             className="w-6 pt-[1px] mr-1"
           />
-          <p className="font-semibold">Sign up with Google</p>
+          <p className="font-semibold">Connect with Google</p>
         </button>
       </div>
     </>

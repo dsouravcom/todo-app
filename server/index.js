@@ -79,8 +79,8 @@ app.put("/updatestatus", async (req, res) => {
 // update task name
 app.put("/updatetaskname", async (req, res) => {
   try {
-    const { id, name } = req.body;
-    await Task.findByIdAndUpdate(id, { name: name });
+    const { id, name, dueDate } = req.body;
+    await Task.findByIdAndUpdate(id, { name: name, dueDate: dueDate});
     res.json({ message: "Task updated" });
   } catch (err) {
     console.log(err);
