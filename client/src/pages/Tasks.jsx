@@ -15,7 +15,7 @@ function Tasks() {
     const fetchTasks = async () => {
       try {
         await axios
-          .get("http://localhost:5000/tasks", {
+          .get(import.meta.env.VITE_APP_ALL_TASKS_URL, {
             params: { uid: user.uid },
           })
           .then((res) => {
@@ -51,7 +51,7 @@ function Tasks() {
   const handleEdit = () => {
     try {
       axios
-        .put(`http://localhost:5000/updatetaskname/`, {
+        .put(import.meta.env.VITE_APP_UPDATE_TASK_URL, {
           id: selectedTaskId,
           name: editedTask,
         })
@@ -70,7 +70,7 @@ function Tasks() {
   const handleDelete = () => {
     try {
       axios
-        .delete(`http://localhost:5000/deletetask/`, {
+        .delete(import.meta.env.VITE_APP_DELETE_TASK_URL, {
           params: { id: selectedTaskId },
         })
         .then((res) => {
@@ -90,7 +90,7 @@ function Tasks() {
     try {
       // Make a PUT request to update the status
       await axios
-        .put(`http://localhost:5000/updatestatus/`, {
+        .put(import.meta.env.VITE_APP_UPDATE_TASK_STATUS_URL, {
           id: taskId,
           status: status,
         })

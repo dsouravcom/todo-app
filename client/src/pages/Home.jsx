@@ -17,7 +17,7 @@ function Home() {
     // console.log(newTask);
     try {
       await axios
-        .post("http://localhost:5000/newtask", {
+        .post(import.meta.env.VITE_APP_NEWTASK_URL, {
           name: newTask,
           uid: user.uid,
           status: false,
