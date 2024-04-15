@@ -7,12 +7,37 @@ require("dotenv").config();
 
 const app = express();
 const port = 5000;
-app.use(cors());
 app.use(bodyParser.json());
 
+// Configure CORS for specific IP and localhost
+const allowedOrigins = process.env.WHITELISTED_DOMAINS;
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Check if the origin is allowed
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Enable credentials (if needed)
+  optionsSuccessStatus: 204, // Respond with a 204 status for preflight requests
+};
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+// Apply CORS middleware globally to all routes 
+app.use((req, res, next) => {
+  const excludeRoutes = ['/test']; // You can include routes that don't use Whitelisted domains.
+  if (excludeRoutes.includes(req.path)) {
+    cors()(req, res, next);
+  } else {
+    cors(corsOptions)(req, res, next);
+  }
+});
+
+
+app.get("/test", (req, res) => {
+  res.send("Hello World the server is working!");
 });
 
 // create new task
