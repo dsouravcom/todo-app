@@ -1,21 +1,23 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../Firebase.js";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/UserContext";
 
 // assets
 import GoogleLogo from "../assets/googleLogo.png";
 
 function Login() {
-  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const onLoginHandle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
-      navigate("/");
+      await signInWithPopup(auth, provider)
+      .then((result) => {
+        result ? navigate("/") : console.error("Error logging in");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     } catch (error) {
       console.error(error);
     }

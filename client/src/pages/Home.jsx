@@ -102,7 +102,7 @@ function Home() {
               <ul>
                 <li className="px-2 ">{user.displayName}</li>
                 <li className="px-2">{user.email}</li>
-                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
 
                 <li>
                   <button
