@@ -11,6 +11,7 @@ function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [newTask, setNewTask] = useState("");
+  const [date, setDate] = useState("");
 
   const onCreateTask = async (e) => {
     e.preventDefault();
@@ -21,10 +22,12 @@ function Home() {
           name: newTask,
           uid: user.uid,
           status: false,
+          dueDate: date,
         })
         .then((res) => {
           console.log(res.data.message);
           setNewTask("");
+          setDate("");
         })
         .catch((err) => {
           console.error(err);
@@ -131,6 +134,14 @@ function Home() {
           className="sm:w-[500px] bg-gray-700 py-1 px-2 rounded-l-md focus:outline-none"
           placeholder="Type your task"
         />
+        <input
+          type="date"
+          name="date-picker"
+          id="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="focus:outline-none bg-blue-500"
+        />
 
         <button
           className="bg-gray-500 pb-1 px-3 text-xl font-extrabold rounded-r-md"
@@ -145,7 +156,7 @@ function Home() {
         <div className="bg-gray-600 w-full sm:w-[600px] md:w-[700px] lg:w-[800px] mt-10 shadow-lg rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Tasks</h2>
           <div className="max-h-[400px] overflow-y-auto">
-            <Tasks props={newTask}/>
+            <Tasks props={newTask} />
           </div>
         </div>
       </div>

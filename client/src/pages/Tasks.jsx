@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/UserContext";
+import { format } from "date-fns";
 
 import LoadingGif from "../assets/Loading.svg";
 
-function Tasks({props}) {
+function Tasks({ props }) {
   const { user } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -31,7 +32,7 @@ function Tasks({props}) {
     };
 
     fetchTasks();
-  }, [editedTask,completed,props]);
+  }, [editedTask, completed, props]);
 
   const openModal = (id) => {
     // setEditedTask(tasks[index]);
@@ -58,7 +59,7 @@ function Tasks({props}) {
         })
         .then((res) => {
           console.log(res.data.message);
-          setCompleted(prevState => !prevState);
+          setCompleted((prevState) => !prevState);
         })
         .catch((err) => {
           console.error(err);
@@ -77,7 +78,7 @@ function Tasks({props}) {
         })
         .then((res) => {
           console.log(res.data.message);
-          setCompleted(prevState => !prevState);
+          setCompleted((prevState) => !prevState);
         })
         .catch((err) => {
           console.error(err);
@@ -143,6 +144,9 @@ function Tasks({props}) {
                 className="peer-checked:text-gray-400 peer-checked:line-through"
               >
                 <span>{task.name}</span> {/* Displaying task name */}
+                {task.dueDate && (
+                  <span className="border rounded-lg text-xs px-1 ms-2">{format(new Date(task.dueDate), "ccc d/M/yyyy")}</span>
+                )}
               </label>
             </div>
             <button

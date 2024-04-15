@@ -43,8 +43,8 @@ app.get("/test", (req, res) => {
 // create new task
 app.post("/newtask", async (req, res) => {
   try {
-    const { name, uid, status } = req.body;
-    await Task.create({ name, uid, status });
+    const { name, uid, status, dueDate } = req.body;
+    await Task.create({ name, uid, status, dueDate });
     res.json({ message: "Task added" });
   } catch (err) {
     console.log(err);
