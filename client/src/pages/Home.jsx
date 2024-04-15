@@ -145,7 +145,7 @@ function Home() {
         <div className="bg-gray-600 w-full sm:w-[600px] md:w-[700px] lg:w-[800px] mt-10 shadow-lg rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Tasks</h2>
           <div className="max-h-[400px] overflow-y-auto">
-            <Tasks />
+            <Tasks props={newTask}/>
           </div>
         </div>
       </div>

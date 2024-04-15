@@ -4,12 +4,13 @@ import { AuthContext } from "../context/UserContext";
 
 import LoadingGif from "../assets/Loading.svg";
 
-function Tasks() {
+function Tasks({props}) {
   const { user } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editedTask, setEditedTask] = useState("");
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -30,7 +31,7 @@ function Tasks() {
     };
 
     fetchTasks();
-  }, [tasks]);
+  }, [editedTask,completed,props]);
 
   const openModal = (id) => {
     // setEditedTask(tasks[index]);
@@ -57,6 +58,7 @@ function Tasks() {
         })
         .then((res) => {
           console.log(res.data.message);
+          setCompleted(prevState => !prevState);
         })
         .catch((err) => {
           console.error(err);
@@ -75,6 +77,7 @@ function Tasks() {
         })
         .then((res) => {
           console.log(res.data.message);
+          setCompleted(prevState => !prevState);
         })
         .catch((err) => {
           console.error(err);
