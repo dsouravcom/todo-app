@@ -4,7 +4,8 @@ import { AuthContext } from "../context/UserContext";
 import { format } from "date-fns";
 
 import LoadingGif from "../assets/Loading.svg";
-import EditLogo from "../assets/edit-logo.png";
+import editLogoWhite from "../assets/edit-logo-white.png";
+import editLogoBlack from "../assets/edit-logo-black.png";
 
 function Tasks({ props }) {
   const { user } = useContext(AuthContext);
@@ -115,6 +116,10 @@ function Tasks({ props }) {
     }
   };
 
+  const isDarkMode =
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
+
   if (!user) {
     return (
       <div className="fixed top-0 left-0 z-50 w-screen h-screen flex justify-center items-center dark:bg-gray-900">
@@ -129,7 +134,7 @@ function Tasks({ props }) {
         tasks.map((task) => (
           <div
             key={task._id}
-            className="flex justify-between items-center border rounded-xl mb-2 py-2 px-2"
+            className="flex justify-between items-center border border-black dark:border-white rounded-xl mb-2 py-2 px-2"
           >
             <div className="flex items-center">
               <input
@@ -153,7 +158,7 @@ function Tasks({ props }) {
                   {/* Displaying task name */}
                 </div>
                 {task.dueDate && (
-                  <span className="border rounded-lg text-xs px-1 ms-2">
+                  <span className="border border-black dark:border-white rounded-lg text-xs px-1 ms-2">
                     {format(new Date(task.dueDate), "ccc dd/MM/yyyy")}
                   </span>
                 )}
@@ -163,7 +168,7 @@ function Tasks({ props }) {
               onClick={() => openModal(task._id)}
               className="text-blue-500"
             >
-              <img src={EditLogo} alt="edit" className=" pr-4 min-w-10" />
+              <img src={isDarkMode?editLogoWhite:editLogoBlack} alt="edit" className=" pr-4 min-w-10" />
             </button>
           </div>
         ))

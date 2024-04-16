@@ -5,7 +5,8 @@ import axios from "axios";
 
 import Tasks from "./Tasks.jsx";
 import LoadingGif from "../assets/Loading.svg";
-import Calendar from "../assets/calendar.png";
+import WhiteCalendar from "../assets/calendar-white.png";
+import BlackCalendar from "../assets/calendar-black.png";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -77,6 +78,10 @@ function Home() {
     }
   };
 
+  const isDarkMode =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
   if (!user) {
     return (
       <div className="fixed top-0 left-0 z-50 w-screen h-screen flex justify-center items-center dark:bg-gray-900">
@@ -107,12 +112,16 @@ function Home() {
           {isOpen && (
             <div
               ref={dropdownRef}
-              className="dropdown absolute w-max z-50 right-0 mt-2 bg-gray-500 rounded shadow-md "
+              className="dropdown absolute w-max z-50 right-0 mt-2 bg-gray-200 dark:bg-gray-500 dark:text-white rounded shadow-md "
             >
               <ul>
-                <li className="px-2 pt-2 font-semibold text-lg">{user.displayName}</li>
-                <li className="px-2 font-thin">{user.email}</li>
-                <hr className="mt-2"></hr>
+                <div className="border-b-2 border-black dark:border-white">
+                  <li className="px-2 pt-2 font-semibold text-lg">
+                    {user.displayName}
+                  </li>
+                  <li className="px-2 font-thin pb-2">{user.email}</li>
+                </div>
+                {/* <hr className="mt-2 "></hr> */}
 
                 <li>
                   <button
@@ -130,7 +139,7 @@ function Home() {
       {/* Header */}
       {/* New task */}
       <form
-        className="flex justify-center mt-8 sm:mt-6 md:mt-2"
+        className="flex justify-center mt-8 sm:mt-6 md:mt-2 "
         onSubmit={onCreateTask}
       >
         <textarea
@@ -138,33 +147,41 @@ function Home() {
           rows={1}
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          className="sm:w-[500px] bg-gray-700 pt-2 px-2 rounded-l-md focus:outline-none"
+          className="sm:w-[500px] bg-white border-2 dark:border-0  dark:bg-gray-700 pt-2 px-2 rounded-l-md focus:outline-none"
           placeholder="Type your task"
           required
         />
         <div className="relative inline-block text-left">
-      <button
-        type="button"
-        onClick={() => setShowDatePicker(!showDatePicker)}
-        className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium bg-gray-700  focus:outline-none"
-      >
-        {date ? date : <img src={Calendar} alt="calendar" />}
-      </button>
+          <button
+            type="button"
+            onClick={() => setShowDatePicker(!showDatePicker)}
+            className="inline-flex justify-center w-full px-2 py-2 text-sm font-medium  border-y-2 dark:border-0 dark:bg-gray-700  focus:outline-none"
+          >
+            {date ? (
+              date
+            ) : (
+              <img
+                src={isDarkMode ? WhiteCalendar : BlackCalendar}
+                alt="calendar"
+              />
+            )}
+            {/* {isDarkMode} */}
+          </button>
 
-      {showDatePicker && (
-        <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md">
-          <input
-            type="date"
-            value={date}
-            onChange={handleDateChange}
-            className="w-56 border border-gray-300 text-gray-800 rounded-lg px-3 py-1 mb-4"
-          />
+          {showDatePicker && (
+            <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md">
+              <input
+                type="date"
+                value={date}
+                onChange={handleDateChange}
+                className="w-56 border border-gray-300 text-gray-800 rounded-lg px-3 py-1 mb-4"
+              />
+            </div>
+          )}
         </div>
-      )}
-    </div>
 
         <button
-          className="bg-gray-500 pb-1 px-3 text-xl font-extrabold rounded-r-md"
+          className="bg-blue-500 text-white dark:bg-gray-500 pb-1 px-3 text-xl font-extrabold rounded-r-md"
           type="submit"
         >
           +
@@ -173,7 +190,7 @@ function Home() {
       {/* New task */}
       {/* Tasks list */}
       <div className="flex justify-center items-center">
-        <div className="bg-gray-600 w-full sm:w-[600px] md:w-[700px] lg:w-[800px] mt-10 shadow-lg rounded-lg p-6">
+        <div className="bg-gray-200 dark:bg-gray-600 w-full sm:w-[600px] md:w-[700px] lg:w-[800px] mt-10 shadow-lg rounded-lg p-6">
           <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
           <div className="max-h-[400px] overflow-y-auto">
             <Tasks props={newTask} />
