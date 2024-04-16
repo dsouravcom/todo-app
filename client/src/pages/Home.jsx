@@ -140,6 +140,7 @@ function Home() {
           onChange={(e) => setNewTask(e.target.value)}
           className="sm:w-[500px] bg-gray-700 pt-2 px-2 rounded-l-md focus:outline-none"
           placeholder="Type your task"
+          required
         />
         <div className="relative inline-block text-left">
       <button
