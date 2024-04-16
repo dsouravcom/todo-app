@@ -100,7 +100,7 @@ function Home() {
         </div>
         <div className="relative">
           <button
-            className="text-white focus:outline-none"
+            className="text-white focus:outline-none ring-2 ring-blue-500 dark:ring-white dark:text-black dark:bg-gray-500 rounded-full w-10 h-10 flex items-center justify-center"
             onClick={handleProfileClick}
           >
             <img
